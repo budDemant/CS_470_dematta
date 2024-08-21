@@ -116,6 +116,8 @@ This will create ```CVwin.zip``` in whatever directory your terminal was in when
 
 Create a folder on your USB drive (```CVwin```) and copy ```CVwin.zip``` to this folder.  Then, unzip the files "here".
 
+***Linux***: **You MAY also have to manually copy ```etc\conda\activate.d\env_vars.sh``` to the corresponding folder on your USB drive!**
+
 **PLEASE NOTE**: If the machine you are running this environment on does NOT have conda installed, you will NOT be able to install additional packages via conda (since the portable environment does not include the conda tool).
 
 ## Portable Visual Code
