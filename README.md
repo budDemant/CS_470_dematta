@@ -121,7 +121,7 @@ Create a folder on your USB drive (```CVwin```) and copy ```CVwin.zip``` to this
 **PLEASE NOTE**: If the machine you are running this environment on does NOT have conda installed, you will NOT be able to install additional packages via conda (since the portable environment does not include the conda tool).
 
 ## Portable Visual Code
-Go [here](https://code.visualstudio.com/?wt.mc_id=vscom_downloads#alt-downloads) and download the **zip version** of Visual Code for your platform (most likely x64).
+Go [here](https://code.visualstudio.com/Download) and download the **zip version** of Visual Code for your platform (most likely x64).
 Unpack it to your USB drive.  Inside the folder for Visual Code, create a ```data``` folder:
 
 This will cause Visual Code to store extensions and settings locally.
