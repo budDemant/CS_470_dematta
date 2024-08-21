@@ -148,7 +148,7 @@ Once you open a project, to make sure you are using the correct Python interpret
 2. Open a .py file
 3. View -> Command Palette -> "Python: Select interpreter"
 4. Choose the one located at ```CVwin\python.exe``` in your USB drive
-5. If the GPU is not being utilized (or you see errors about paths to CUDA libraries not being found), type the following in your terminal to manually activate your environment: ```K:\CVwin\Scripts\activate.bat``` (replace ```K``` with the appropriate drive letter for your USB drive).
+5. If the GPU is not being utilized (or you see errors about paths to CUDA libraries not being found), type the following in your terminal to manually activate your environment: ```CVwin\Scripts\activate.bat``` (you will need whatever path is before ```CVwin```)
 
 ## Troubleshooting
 
