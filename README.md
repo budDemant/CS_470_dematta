@@ -127,7 +127,9 @@ Unpack it to your USB drive.  Inside the folder for Visual Code, create a ```dat
 This will cause Visual Code to store extensions and settings locally.
 
 To run Visual Code:
+
 ***Windows:*** double-click on this version of ```Code.exe```.
+
 ***Linux/Mac:*** run ```./code```
 
 Install the following extensions:
