@@ -93,7 +93,6 @@ pip3 install --upgrade huggingface_hub
 pip3 install huggingface_hub[cli,torch]
 pip3 install peft
 pip3 install --upgrade datasets
-pip3 install tensorboard
 pip3 install bitsandbytes
 pip3 install clean-fid
 pip3 install ftfy regex tqdm
@@ -135,6 +134,7 @@ To run Visual Code:
 Install the following extensions:
 - **Python Extension Pack** by Don Jayamanne
 - **Git Graph** by mhutchie
+- **Pylint** by Microsoft
 
 A terminal can always be created/opened with ```View menu -> Terminal```.  However, if you need to restart, click the garbage can icon on the terminal window to destroy it.
 
