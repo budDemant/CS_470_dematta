@@ -67,7 +67,7 @@ def main():
         
         # Did we get it?
         if not camera.isOpened():
-            print("ERROR: Cannot open camera!")
+            print("ERROR: Cannot open the camera!")
             exit(1)
 
         # Create window ahead of time
