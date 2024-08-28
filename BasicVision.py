@@ -55,7 +55,7 @@ def main():
     ###############################################################################
     if len(sys.argv) <= 1:
         # Webcam
-        print("Opening webcam...")
+        print("Opening the webcam...")
 
         # Linux/Mac (or native Windows) with direct webcam connection
         camera = cv2.VideoCapture(0, cv2.CAP_DSHOW) # CAP_DSHOW recommended on Windows 
