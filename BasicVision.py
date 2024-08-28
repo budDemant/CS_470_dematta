@@ -38,7 +38,7 @@ def main():
     
     b = torch.rand(5,3)
     print(b)
-    print("Torch CUDA?:", torch.cuda.is_available())
+    print("Do you have Torch CUDA?:", torch.cuda.is_available())
     
     ###############################################################################
     # PRINT OUT VERSIONS
@@ -67,7 +67,7 @@ def main():
         
         # Did we get it?
         if not camera.isOpened():
-            print("ERROR: Cannot open camera!")
+            print("ERROR: Cannot open the camera!")
             exit(1)
 
         # Create window ahead of time
