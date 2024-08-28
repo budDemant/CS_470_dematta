@@ -38,7 +38,7 @@ def main():
     
     b = torch.rand(5,3)
     print(b)
-    print("Torch CUDA?:", torch.cuda.is_available())
+    print("Do you have Torch CUDA?:", torch.cuda.is_available())
     
     ###############################################################################
     # PRINT OUT VERSIONS
