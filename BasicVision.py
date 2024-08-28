@@ -118,5 +118,6 @@ def main():
         # Cleanup this window
         cv2.destroyAllWindows()
 
+# The main function
 if __name__ == "__main__": 
     main()
