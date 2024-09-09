@@ -96,6 +96,7 @@ pip3 install --upgrade datasets
 pip3 install bitsandbytes
 pip3 install clean-fid
 pip3 install ftfy regex tqdm
+pip3 install pytest
 ```
 
 ## Making a Portable Environment
