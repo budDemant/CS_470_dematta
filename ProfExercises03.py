@@ -26,12 +26,61 @@ import torch
 import cv2
 import pandas
 import sklearn
+from enum import Enum
+
+class IntTransform(Enum):
+    ORIGINAL = 0
+    NEGATIVE = 1
+    SLICE = 2
+    GAMMA = 3
+
+
+def do_int_transform(image, chosen_T, 
+                     slice_low=100, slice_high=200,
+                     gamma=0.4):
+    output = np.copy(image)
+    
+    def gamma_func(x):
+        x /= 255.0
+        x = pow(x, gamma)
+        x *= 255.0
+        return x
+    
+    if chosen_T == IntTransform.ORIGINAL:
+        # Do nothing
+        return output
+    elif chosen_T == IntTransform.NEGATIVE:
+        output = 255 - output  
+    elif chosen_T == IntTransform.SLICE:
+        for row in range(output.shape[0]):
+            for col in range(output.shape[1]):
+                pixel = image[row,col]
+                if pixel >= slice_low and pixel <= slice_high:
+                    pixel = 255
+                else:
+                    pixel = 0
+                output[row,col] = pixel
+    elif chosen_T == IntTransform.GAMMA:
+        vector_gamma = np.vectorize(gamma_func)
+        output = output.astype("float64")
+        output = vector_gamma(output)
+        output = cv2.convertScaleAbs(output)
+                   
+    return output
 
 ###############################################################################
 # MAIN
 ###############################################################################
 
-def main():        
+def main():    
+        
+    for item in list(IntTransform):
+        print(item.value, "-", item.name)
+    chosen_T = IntTransform(int(input("Enter choice: ")))
+    print("Chosen One:", chosen_T.name)
+    
+    gamma = 0.4
+             
     ###############################################################################
     # PYTORCH
     ###############################################################################
@@ -76,15 +125,31 @@ def main():
 
         # While not closed...
         key = -1
-        while key == -1:
+        ESC_KEY = 27
+        
+        while key != ESC_KEY:
             # Get next frame from camera
             _, frame = camera.read()
             
-            # Show the image
+            # Convert to grayscale
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            
+            # Transform            
+            processed = do_int_transform(frame, chosen_T, gamma=gamma)
+            
+            # Show the images
             cv2.imshow(windowName, frame)
+            cv2.imshow("Processed", processed)
 
             # Wait 30 milliseconds, and grab any key presses
             key = cv2.waitKey(30)
+            
+            if key == ord('a'):
+                gamma /= 2.0
+                print("GAMMA:", gamma)
+            elif key == ord('d'):
+                gamma *= 2.0
+                print("GAMMA:", gamma)
 
         # Release the camera and destroy the window
         camera.release()
@@ -110,7 +175,16 @@ def main():
 
         # Show our image (with the filename as the window title)
         windowTitle = "PYTHON: " + filename
+                
+        # Convert to grayscale
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        
+        # Transform        
+        processed = do_int_transform(image, chosen_T)
+        
+        # Show the images
         cv2.imshow(windowTitle, image)
+        cv2.imshow("Processed", processed)
 
         # Wait for a keystroke to close the window
         cv2.waitKey(-1)

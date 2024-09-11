@@ -27,11 +27,57 @@ import cv2
 import pandas
 import sklearn
 
+counter = 0
+MAX_COUNTER = 30
+last_image = None
+
+def make_ghost_image(image):
+    global counter
+    global last_image
+    
+    image = image.astype(np.float64)
+    
+    if last_image is None or counter >= MAX_COUNTER:
+        counter = 0
+        last_image = np.copy(image)
+        
+    ghost_image = cv2.convertScaleAbs(image*0.5 + last_image*0.5)
+    
+    counter += 1
+    
+    return ghost_image   
+
+def gray_slice(image, min_val = 100, max_val = 200):
+    output = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    #output = np.where(output <= min_val, min_val, output)
+    #output = np.where(output >= max_val, max_val, output)
+    output = np.where(output <= min_val, 0, output)
+    output = np.where(output >= max_val, 0, output)
+    return output 
+
+def my_eyes(image, scale=0.1, up_inter=cv2.INTER_NEAREST):
+    output = np.copy(image)
+    output = cv2.resize(output, dsize=(0,0), fx=scale, fy=scale)
+    inv_scale = 1.0/scale
+    output = cv2.resize(output, dsize=(0,0), fx=inv_scale, fy=inv_scale, interpolation=up_inter)
+    return output  
+
 ###############################################################################
 # MAIN
 ###############################################################################
 
-def main():        
+def main():
+    
+    '''
+    image = np.zeros((600, 800, 3), dtype="uint8")    
+    #subimage = np.copy(image[50:100,20:400,0:3])    
+    image[:,20:400] = (128, 255, 0)    
+    cv2.imshow("My Image", image)
+    cv2.waitKey(-1)
+    cv2.destroyAllWindows()
+    '''
+        
+            
     ###############################################################################
     # PYTORCH
     ###############################################################################
@@ -82,6 +128,15 @@ def main():
             
             # Show the image
             cv2.imshow(windowName, frame)
+            
+            processed = gray_slice(frame)
+            cv2.imshow("Gray slice", processed)
+            
+            horrors = my_eyes(frame, up_inter=cv2.INTER_NEAREST, scale=0.1)
+            cv2.imshow("THE HORROR", horrors)
+            
+            ghost_image = make_ghost_image(frame)
+            cv2.imshow("GHOST", ghost_image)
 
             # Wait 30 milliseconds, and grab any key presses
             key = cv2.waitKey(30)
@@ -111,6 +166,9 @@ def main():
         # Show our image (with the filename as the window title)
         windowTitle = "PYTHON: " + filename
         cv2.imshow(windowTitle, image)
+        
+        processed = gray_slice(image)
+        cv2.imshow("Gray slice", processed)
 
         # Wait for a keystroke to close the window
         cv2.waitKey(-1)
