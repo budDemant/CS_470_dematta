@@ -33,6 +33,7 @@ class IntTransform(Enum):
     NEGATIVE = 1
     SLICE = 2
     GAMMA = 3
+    HISTEQ = 4
 
 
 def do_int_transform(image, chosen_T, 
@@ -65,6 +66,8 @@ def do_int_transform(image, chosen_T,
         output = output.astype("float64")
         output = vector_gamma(output)
         output = cv2.convertScaleAbs(output)
+    elif chosen_T == IntTransform.HISTEQ:
+        output = cv2.equalizeHist(output)
                    
     return output
 
