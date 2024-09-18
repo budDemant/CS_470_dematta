@@ -33,6 +33,7 @@ class IntTransform(Enum):
     NEGATIVE = 1
     SLICE = 2
     GAMMA = 3
+    HISTEQ = 4
 
 
 def do_int_transform(image, chosen_T, 
@@ -65,6 +66,8 @@ def do_int_transform(image, chosen_T,
         output = output.astype("float64")
         output = vector_gamma(output)
         output = cv2.convertScaleAbs(output)
+    elif chosen_T == IntTransform.HISTEQ:
+        output = cv2.equalizeHist(output)
                    
     return output
 
@@ -79,7 +82,10 @@ def main():
     chosen_T = IntTransform(int(input("Enter choice: ")))
     print("Chosen One:", chosen_T.name)
     
+    # Parameters
     gamma = 0.4
+    slice_low=100
+    slice_high=200
              
     ###############################################################################
     # PYTORCH
@@ -135,7 +141,10 @@ def main():
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             
             # Transform            
-            processed = do_int_transform(frame, chosen_T, gamma=gamma)
+            processed = do_int_transform(frame, chosen_T, 
+                                         gamma=gamma,
+                                         slice_low=slice_low,
+                                         slice_high=slice_high)
             
             # Show the images
             cv2.imshow(windowName, frame)
@@ -150,6 +159,21 @@ def main():
             elif key == ord('d'):
                 gamma *= 2.0
                 print("GAMMA:", gamma)
+                
+            if key == ord('q'):
+                slice_low -= 20
+                print("SLICE RANGE:", slice_low, "to", slice_high)
+            if key == ord('w'):
+                slice_low += 20
+                print("SLICE RANGE:", slice_low, "to", slice_high)
+                
+            if key == ord('e'):
+                slice_high -= 20
+                print("SLICE RANGE:", slice_low, "to", slice_high)
+            if key == ord('r'):
+                slice_high += 20
+                print("SLICE RANGE:", slice_low, "to", slice_high)
+
 
         # Release the camera and destroy the window
         camera.release()
