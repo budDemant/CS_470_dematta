@@ -78,10 +78,10 @@ def main():
         key = -1
         while key == -1:
             # Get next frame from camera
-            _, frame = camera.read()
+            _, image = camera.read()
             
             # Show the image
-            cv2.imshow(windowName, frame)
+            cv2.imshow(windowName, image)
 
             # Wait 30 milliseconds, and grab any key presses
             key = cv2.waitKey(30)
@@ -101,8 +101,8 @@ def main():
 
         # Load image
         print("Loading image:", filename)
-        image = cv2.imread(filename) # For grayscale: cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
-
+        image = cv2.imread(filename) 
+        
         # Check if data is invalid
         if image is None:
             print("ERROR: Could not open or find the image!")
