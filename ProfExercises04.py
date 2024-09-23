@@ -32,6 +32,8 @@ class FilterType(Enum):
     BOX = 0
     GAUSS = 1    
     MEDIAN = 2
+    LAPLACIAN = 3
+    SHARPEN = 4
     
 def filter_image(image, filter_type, filter_width, filter_height):
     output = np.copy(image)
@@ -42,6 +44,14 @@ def filter_image(image, filter_type, filter_width, filter_height):
         output = cv2.GaussianBlur(output, (filter_width, filter_height), sigmaX=0)
     elif filter_type == FilterType.MEDIAN:
         output = cv2.medianBlur(output, filter_width)
+    elif filter_type == FilterType.LAPLACIAN:
+        laplace = cv2.Laplacian(output, cv2.CV_64F, ksize=filter_width, scale=0.25)
+        output = cv2.convertScaleAbs(laplace, alpha=0.5, beta=127)
+    elif filter_type == FilterType.SHARPEN:
+        laplace = cv2.Laplacian(output, cv2.CV_64F, ksize=filter_width, scale=0.25)
+        fimage = image.astype("float64")
+        fimage -= laplace
+        output = cv2.convertScaleAbs(fimage)
         
     return output
 
