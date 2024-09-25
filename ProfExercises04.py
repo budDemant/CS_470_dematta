@@ -27,6 +27,7 @@ import cv2
 import pandas
 import sklearn
 from enum import Enum
+import math as m
 
 class FilterType(Enum):
     BOX = 0
@@ -34,6 +35,10 @@ class FilterType(Enum):
     MEDIAN = 2
     LAPLACIAN = 3
     SHARPEN = 4
+    SOBEL_X = 5
+    SOBEL_Y = 6
+    GRAD_MAG = 7
+    CUSTOM = 8
     
 def filter_image(image, filter_type, filter_width, filter_height):
     output = np.copy(image)
@@ -52,6 +57,24 @@ def filter_image(image, filter_type, filter_width, filter_height):
         fimage = image.astype("float64")
         fimage -= laplace
         output = cv2.convertScaleAbs(fimage)
+    elif filter_type == FilterType.SOBEL_X:
+        gx = cv2.Sobel(output, cv2.CV_64F, dx=1, dy=0, ksize=filter_width, scale=0.25)
+        output = cv2.convertScaleAbs(gx, alpha=0.5, beta=127)
+    elif filter_type == FilterType.SOBEL_Y:
+        gy = cv2.Sobel(output, cv2.CV_64F, dx=0, dy=1, ksize=filter_width, scale=0.25)
+        output = cv2.convertScaleAbs(gy, alpha=0.5, beta=127)
+    elif filter_type == FilterType.GRAD_MAG:
+        gx = cv2.Sobel(output, cv2.CV_64F, dx=1, dy=0, ksize=filter_width, scale=0.25)
+        gy = cv2.Sobel(output, cv2.CV_64F, dx=0, dy=1, ksize=filter_width, scale=0.25)
+        grad_mag = (np.absolute(gx) + np.absolute(gy))/2.0
+        output = cv2.convertScaleAbs(grad_mag)
+    elif filter_type == FilterType.CUSTOM:
+        kernel = np.zeros((filter_height, filter_width), dtype="float64")
+        scale = (2.0*m.pi*5.0)/filter_width
+        for i in range(filter_width):
+            kernel[:,i] = m.sin(i*scale)
+        output = cv2.filter2D(output, cv2.CV_64F, kernel)
+        output = cv2.convertScaleAbs(output, alpha=0.5, beta=127)
         
     return output
 
