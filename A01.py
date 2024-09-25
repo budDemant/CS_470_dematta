@@ -44,6 +44,7 @@ def get_hist_equalize_transform(image, do_stretching):
     if do_stretching == True:
         return None
         
+        
     
     
 

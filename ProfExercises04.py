@@ -26,12 +26,49 @@ import torch
 import cv2
 import pandas
 import sklearn
+from enum import Enum
+
+class FilterType(Enum):
+    BOX = 0
+    GAUSS = 1    
+    MEDIAN = 2
+    LAPLACIAN = 3
+    SHARPEN = 4
+    
+def filter_image(image, filter_type, filter_width, filter_height):
+    output = np.copy(image)
+    
+    if filter_type == FilterType.BOX:
+        output = cv2.blur(output, (filter_width, filter_height))
+    elif filter_type == FilterType.GAUSS:
+        output = cv2.GaussianBlur(output, (filter_width, filter_height), sigmaX=0)
+    elif filter_type == FilterType.MEDIAN:
+        output = cv2.medianBlur(output, filter_width)
+    elif filter_type == FilterType.LAPLACIAN:
+        laplace = cv2.Laplacian(output, cv2.CV_64F, ksize=filter_width, scale=0.25)
+        output = cv2.convertScaleAbs(laplace, alpha=0.5, beta=127)
+    elif filter_type == FilterType.SHARPEN:
+        laplace = cv2.Laplacian(output, cv2.CV_64F, ksize=filter_width, scale=0.25)
+        fimage = image.astype("float64")
+        fimage -= laplace
+        output = cv2.convertScaleAbs(fimage)
+        
+    return output
 
 ###############################################################################
 # MAIN
 ###############################################################################
 
-def main():        
+def main():   
+    
+    for item in list(FilterType):
+        print(item.value, "-", item.name)
+    filter_type = FilterType(int(input("Enter choice: ")))
+    print("Chosen One:", filter_type.name)
+    
+    filter_width = int(input("Enter filter width: "))
+    filter_height = int(input("Enter filter height: "))
+         
     ###############################################################################
     # PYTORCH
     ###############################################################################
@@ -78,10 +115,14 @@ def main():
         key = -1
         while key == -1:
             # Get next frame from camera
-            _, image = camera.read()
+            _, frame = camera.read()
+            
+            gray_scale = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            filtered = filter_image(gray_scale, filter_type, filter_width, filter_height)            
             
             # Show the image
-            cv2.imshow(windowName, image)
+            cv2.imshow(windowName, gray_scale)
+            cv2.imshow("FILTERED", filtered)
 
             # Wait 30 milliseconds, and grab any key presses
             key = cv2.waitKey(30)
@@ -101,8 +142,8 @@ def main():
 
         # Load image
         print("Loading image:", filename)
-        image = cv2.imread(filename) 
-        
+        image = cv2.imread(filename) # For grayscale: cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
+
         # Check if data is invalid
         if image is None:
             print("ERROR: Could not open or find the image!")
