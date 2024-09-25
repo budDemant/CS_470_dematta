@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 
 def create_unnormalized_hist(image):
     # Create a numpy array of zeros with shape (256,) and dtype float64
@@ -41,8 +42,18 @@ def get_hist_equalize_transform(image, do_stretching):
     # Make the CDF
     cdf = create_cdf(nhist)
     
+    int_transform = np.zeros(256, dtype=np.float64)
+    
+    # stretching formula is newImage = ((oldPixelIntensity - minIntensity) * 255) / maxIntensity - minIntensity
     if do_stretching == True:
-        return None
+        for i in range(len(cdf)):
+            int_transform[i] = ((cdf[i] - cdf.min()) * 255) / (cdf.max() - cdf.min())
+        
+    int_transform = cv2.convertScaleAbs(int_transform)[:,0]
+    
+    return int_transform
+        
+        
         
         
     
