@@ -40,9 +40,10 @@ def get_hist_equalize_transform(image, do_stretching):
     nhist = normalize_hist(hist)
     # Make the CDF
     cdf = create_cdf(nhist)
-    #test change again
+    
     if do_stretching == True:
         return None
+        
         
     
     
