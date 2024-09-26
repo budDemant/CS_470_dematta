@@ -1,3 +1,5 @@
+# I apologize in advance for my mix of hyphen and camelCase variables
+
 import numpy as np
 import cv2
 
@@ -15,9 +17,8 @@ def create_unnormalized_hist(image):
 
 
 def normalize_hist(hist):
-    # total number of pixels in histogram
     histSum = np.sum(hist)
-    # Create a new array to hold the normalized histogram
+    # didn't have this line before, was returning scalar oops
     nhist = np.zeros(256, dtype=np.float64)
     
     # Iterate through each pixel intensity, dividing each by histSum to normalize
@@ -60,7 +61,28 @@ def get_hist_equalize_transform(image, do_stretching):
     int_transform = cv2.convertScaleAbs(cdf)[:,0]
     
     return int_transform
-        
+
+
+def do_histogram_equalize(image, do_stretching):
+    # COPY your image → output
+    outputImage = image.copy()
+    # Get your transformation function
+    transFunc = get_hist_equalize_transform(outputImage, do_stretching)
+    
+    # copied from unnormalized hist func bc it's the same logic
+    height, width = image.shape
+    # For each pixel in the image
+    for i in range(height):
+        for j in range(width): 
+            pixelValue = image[i, j] # Get the value
+            transValue = transFunc[pixelValue] # Use your transformation to get the new value
+            outputImage[i, j] = transValue # Store it into the OUTPUT image
+    
+    return outputImage
+            
+            
+    
+    
         
         
         
