@@ -1,7 +1,9 @@
-# I apologize in advance for my mix of hyphen and camelCase variables
+''' I apologize in advance for the mix of underscore and camelCase variables. I am accustomed to camelCasing
+but it seems that most of the given code (from the instructions) uses underscores '''
 
 import numpy as np
 import cv2
+import gradio as gr
 
 def create_unnormalized_hist(image):
     # Create a numpy array of zeros with shape (256,) and dtype float64
@@ -79,6 +81,22 @@ def do_histogram_equalize(image, do_stretching):
             outputImage[i, j] = transValue # Store it into the OUTPUT image
     
     return outputImage
+
+
+# Gradio stuff
+def intensity_callback(input_img, do_stretching): 
+    input_img = cv2.cvtColor(input_img, cv2.COLOR_BGR2GRAY) 
+    output_img = do_histogram_equalize(input_img, do_stretching)     
+    return output_img 
+     
+def main(): 
+    demo = gr.Interface(fn=intensity_callback,  
+                        inputs=["image", "checkbox"], 
+                        outputs=["image"]) 
+    demo.launch()    
+ 
+if __name__ == "__main__": 
+    main()
             
             
     
