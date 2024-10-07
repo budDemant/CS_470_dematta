@@ -4,7 +4,7 @@ import cv2
 def read_kernel_file(filepath):
     # Open a file for reading and grab the first line
     with open(filepath, 'r') as file:
-        line = filepath.readline()
+        line = file.readline()
     
     # Split the line into tokens by spaces
     tokens = line.split()
