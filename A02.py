@@ -45,7 +45,7 @@ def apply_filter(image, kernel, alpha=1.0, beta=0.0, convert_uint8=True):
                 left=padLeft, right=padRight, borderType=cv2.BORDER_CONSTANT, value=0)
     
     # Create a FLOATING-POINT (float64) numpy array to hold our output image
-    output = np.zeros(image, dtype=np.float64)
+    output = np.zeros(image.shape, dtype=np.float64)
     
     # Grab the subimage from the PADDED image
     for row in range(image.shape[0]):
@@ -54,6 +54,16 @@ def apply_filter(image, kernel, alpha=1.0, beta=0.0, convert_uint8=True):
             # if image is 3x3 and filter is 3x3, will result in 9 subimages
             subImage = imagePad[row : (row + kernel.shape[0]), col : (col + kernel.shape[1])]
     
+    # Multiply the subimage by the kernel       
+    filtervals = subImage * kernel
+    
+    # Get the sum of these values: 
+    value = np.sum(filtervals) 
+    
+    output[row,col] = value
     
     if convert_uint8:
-        cv2.convertScaleAbs(output)
+        output = cv2.convertScaleAbs(output, alpha=alpha, beta=beta)
+
+        
+    return output
