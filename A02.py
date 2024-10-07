@@ -35,5 +35,16 @@ def apply_filter(image, kernel, alpha=1.0, beta=0.0, convert_uint8=True):
     kernel = cv2.flip(kernel, -1)
     
     # padding is height and width of the kernel integer-divided by 2
-    padding = [kernel.shape[0] // 2, kernel.shape[1] //2 ]
+    padTop = kernel.shape[0] // 2
+    padBottom = kernel.shape[0] // 2
+    padLeft = kernel.shape[1] // 2
+    padRight = kernel.shape[1] // 2
+    
+    # create a padded image using borderType=cv2.BORDER_CONSTANT and zero-padding
+    imagePad = cv2.copyMakeBorder(image, top=padTop, bottom=padBottom,
+                            left=padLeft, right=padRight, borderType=cv2.BORDER_CONSTANT, value=0)
+    
+    # Create a FLOATING-POINT (float64) numpy array to hold our output image
+    output = np.zeros(image.shape, dtype=np.float64)
+    
     
