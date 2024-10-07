@@ -29,7 +29,7 @@ def read_kernel_file(filepath):
     
 def apply_filter(image, kernel, alpha=1.0, beta=0.0, convert_uint8=True):
     #Cast both the image and kernel to "float64"
-    np.float64(image,kernel)
+    image, kernel = np.float64(image,kernel)
     
     # Rotate the kernel 180 degrees so that you are performing convolution: 
     kernel = cv2.flip(kernel, -1)
@@ -42,9 +42,18 @@ def apply_filter(image, kernel, alpha=1.0, beta=0.0, convert_uint8=True):
     
     # create a padded image using borderType=cv2.BORDER_CONSTANT and zero-padding
     imagePad = cv2.copyMakeBorder(image, top=padTop, bottom=padBottom,
-                            left=padLeft, right=padRight, borderType=cv2.BORDER_CONSTANT, value=0)
+                left=padLeft, right=padRight, borderType=cv2.BORDER_CONSTANT, value=0)
     
     # Create a FLOATING-POINT (float64) numpy array to hold our output image
-    output = np.zeros(image.shape, dtype=np.float64)
+    output = np.zeros(image, dtype=np.float64)
+    
+    # Grab the subimage from the PADDED image
+    for row in range(image.shape[0]):
+        for col in range(image.shape[1]):
+            # np.array[row_start : row_end, col_start : col_end] (this comment is for me to remember)
+            # if image is 3x3 and filter is 3x3, will result in 9 subimages
+            subImage = imagePad[row : (row + kernel.shape[0]), col : (col + kernel.shape[1])]
     
     
+    if convert_uint8:
+        cv2.convertScaleAbs(output)
