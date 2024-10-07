@@ -28,7 +28,8 @@ def read_kernel_file(filepath):
     
 def apply_filter(image, kernel, alpha=1.0, beta=0.0, convert_uint8=True):
     #Cast both the image and kernel to "float64"
-    image, kernel = np.float64(image,kernel)
+    image = image.astype(np.float64)
+    kernel = kernel.astype(np.float64)
     
     # Rotate the kernel 180 degrees so that you are performing convolution: 
     kernel = cv2.flip(kernel, -1)
@@ -53,13 +54,13 @@ def apply_filter(image, kernel, alpha=1.0, beta=0.0, convert_uint8=True):
             # if image is 3x3 and filter is 3x3, will result in 9 subimages
             subImage = imagePad[row : (row + kernel.shape[0]), col : (col + kernel.shape[1])]
     
-    # Multiply the subimage by the kernel       
-    filtervals = subImage * kernel
-    
-    # Get the sum of these values: 
-    value = np.sum(filtervals) 
-    
-    output[row,col] = value
+            # Multiply the subimage by the kernel       
+            filtervals = subImage * kernel
+            
+            # Get the sum of these values: 
+            value = np.sum(filtervals) 
+            
+            output[row,col] = value
     
     if convert_uint8:
         output = cv2.convertScaleAbs(output, alpha=alpha, beta=beta)
