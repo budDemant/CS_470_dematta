@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 
 def read_kernel_file(filepath):
     # Open a file for reading and grab the first line
@@ -26,4 +27,13 @@ def read_kernel_file(filepath):
     return kernel
             
     
+def apply_filter(image, kernel, alpha=1.0, beta=0.0, convert_uint8=True):
+    #Cast both the image and kernel to "float64"
+    np.float64(image,kernel)
+    
+    # Rotate the kernel 180 degrees so that you are performing convolution: 
+    kernel = cv2.flip(kernel, -1)
+    
+    # padding is height and width of the kernel integer-divided by 2
+    padding = [kernel.shape[0] // 2, kernel.shape[1] //2 ]
     
