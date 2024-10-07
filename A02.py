@@ -18,10 +18,9 @@ def read_kernel_file(filepath):
     # Starting at index = 2
     index = 2
     # loop through each row and column of the kernel/filter and store the correct token (converted to a float)
-    for i in range(kernel.shape[0]):
-        kernel[i] = float(tokens[index])
-        for j in range(kernel.shape[1]):
-            kernel[j] = float(tokens[index])
+    for i in range(rowCnt):
+        for j in range(colCnt):
+            kernel[i,j] = float(tokens[index])
             index += 1
     
     return kernel
