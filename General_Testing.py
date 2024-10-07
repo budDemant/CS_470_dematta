@@ -21,6 +21,9 @@ def get_difference_string(pred, ground, atol):
     if pred.shape == ground.shape:
         diff_string = "INDEX\tPRED\t\tGROUND\n"
         diff_string = sub_get_difference_string(pred, ground, [], atol, diff_string)
+        
+    # DEBUG: To remove the giant printout of changes, uncomment this line:
+    # diff_string = ""
     return diff_string
 
 def check_for_unequal(base_error_msg, filename, pred, ground):
