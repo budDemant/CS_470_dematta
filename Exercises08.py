@@ -30,13 +30,36 @@ from enum import Enum
 
 class THRESH_TYPE(Enum):
     MANUAL = 0
+    AUTOMATIC = 1
+    
     
 def do_threshold(image, thresh_type, val):
     output = np.copy(image)
 
     if thresh_type == THRESH_TYPE.MANUAL:
         _, output = cv2.threshold(output, thresh=val, maxval=255, type=cv2.THRESH_BINARY)
+    elif thresh_type == THRESH_TYPE.AUTOMATIC:
+        T = cv2.mean(image)[0]
         
+        old_T = 800
+        
+        diff_T = abs(T -old_T)
+        
+        while diff_T > 1:
+            old_T = T
+            _, output = cv2.threshold(image, thresh=T, maxval=255, type=cv2.THRESH_BINARY)
+        
+            fore_mean = cv2.mean(image, output)[0]
+            back_mean = cv2.mean(image, 255 - output)[0]
+        
+            T = (fore_mean + back_mean)/2
+            diff_T = abs(T -old_T)
+            
+        _, output = cv2.threshold(image, thresh=T, maxval=255, type=cv2.THRESH_BINARY)
+        print("T:", T)
+        
+        
+           
     return output
 ###############################################################################
 # MAIN
