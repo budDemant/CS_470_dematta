@@ -1,5 +1,6 @@
 ''' I apologize in advance for the mix of underscore and camelCase variables. I am accustomed to camelCasing
 but it seems that most of the given code (from the instructions) uses underscores '''
+# No problem.
 
 import numpy as np
 import cv2
