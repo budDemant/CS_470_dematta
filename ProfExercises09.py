@@ -244,6 +244,7 @@ def main():
                 cv2.rectangle(draw_image, (xmin, ymin), (xmax, ymax), (0,0,255), 3)
                 
         segments = skimage.segmentation.slic(image, n_segments=100, sigma=5,
+                                             compactness=10.0,
                                              start_label=0)
         super_cnt = len(np.unique(segments))
         print("SUPER CNT:", super_cnt)
