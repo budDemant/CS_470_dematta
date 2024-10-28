@@ -225,7 +225,7 @@ def main():
         
         draw_image = np.copy(image)
         for blob_index in range(1, cnt):
-            print(blob_index)
+            #print(blob_index)
             coords = np.where(region_image == blob_index)
             #print(coords)
             #exit(1)
@@ -243,7 +243,10 @@ def main():
             if area > 10:            
                 cv2.rectangle(draw_image, (xmin, ymin), (xmax, ymax), (0,0,255), 3)
                 
-        segments = skimage.segmentation.slic(image, n_segments=100, sigma=5)
+        segments = skimage.segmentation.slic(image, n_segments=100, sigma=5,
+                                             start_label=0)
+        super_cnt = len(np.unique(segments))
+        print("SUPER CNT:", super_cnt)
         super_image = skimage.segmentation.mark_boundaries(image, segments)
         
         cluster_color_image = cluster_by_color(image, cluster_cnt=6, target_color=(0,255,0))
