@@ -1,9 +1,6 @@
-
-\.vscode/
-\.venv/
 *.pyc
 __pycache__/
-Pipfile.lock
+.pytest_cache/
+.vscode/
 data/
 logs/
-.pytest_cache/
