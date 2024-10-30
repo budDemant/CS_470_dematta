@@ -78,7 +78,7 @@ def main():
     thresh_type = THRESH_TYPE(int(input("Enter choice: ")))
     print("Chosen One:", thresh_type.name)
     
-    value = 7 # 127
+    value = 89 # 7
         
     ###############################################################################
     # PYTORCH
@@ -121,6 +121,10 @@ def main():
         # Create window ahead of time
         windowName = "Webcam"
         cv2.namedWindow(windowName)
+        
+        element_size = 11
+        element = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (element_size,element_size))
+        morph_iter = 1
 
         # While not closed...
         key = -1
@@ -129,8 +133,14 @@ def main():
             # Get next frame from camera
             _, image = camera.read()
             
+            
+    
+            
             grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             thresh_image = do_threshold(grayscale, thresh_type, value)
+            
+            morph_image = cv2.morphologyEx(thresh_image, cv2.MORPH_CLOSE #MORPH_ERODE
+                                           , element, iterations=morph_iter)
             
             # Show the image
             cv2.imshow(windowName, image)
@@ -145,6 +155,11 @@ def main():
             if key == ord('s'):
                 value += 2
                 print("THRESHOLD:", value)
+            if key == ord('d'):
+                morph_iter = max(morph_iter-1, 1)
+            if key == ord('f'):
+                morph_iter = morph_iter + 1
+                print("ITER:", morph_iter)
 
         # Release the camera and destroy the window
         camera.release()
