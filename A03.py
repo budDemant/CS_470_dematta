@@ -68,7 +68,7 @@ def find_WBC(image):
     # (Step 8) Use cv2.connectedComponents to get disjoint blobs from cell_mask.
     # retval = number of connection components / blobs found 
     # labels = image with labels marked
-    retval, labels = cv2.connectedComponents(cellMask)
+    retval, labels = cv2.connectedComponents(morphMask)
     
     
     # (Step 9) For each blob group (except 0, which is the background):
