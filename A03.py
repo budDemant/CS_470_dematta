@@ -49,12 +49,32 @@ def find_WBC(image):
     distances = np.sqrt(np.sum((centers - targetColor) ** 2, axis=1))
     wbcGroup = np.argmin(distances)
     
+    
     # (Step 5) Set that k-means group to white and the rest to black.
     
     # binary mask
     centers = np.zeros_like(centers)
     
     centers[wbcGroup] = [255, 255, 255]
+    
+    
+    # (Step 6) Determine the new colors for each superpixel group
+    
+    # Convert centers to unsigned 8-bit 
+    centers = centers.astype(np.uint8)
+    
+    # Get the new superpixel group colors:
+    colorsPerClump = centers[bestLabels.flatten()] 
+    
+    
+    # (Step 7) Recolor the superpixels with their new group colors (which are now just white and black)
+    cellMask = colorsPerClump[segments]
+    
+    # Convert cell_mask to grayscale!
+    cellMask = cv2.cvtColor(cellMask, cv2.COLOR_BGR2GRAY)
+    
+    # (Step 8) Use cv2.connectedComponents to get disjoint blobs from cell_mask.
+    
     
     
     
