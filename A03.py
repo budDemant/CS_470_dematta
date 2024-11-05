@@ -69,6 +69,17 @@ def find_WBC(image):
     
     
     # (Step 9) For each blob group (except 0, which is the background):
+    boundingBoxes = []
+    for i in range(1, retval):
+        coords = np.where(labels == i)
+        # "except 0"
+        if coords[0].size > 0 and coords[1].size > 0:
+            ymin, ymax = coords[0].min(), coords[0].max()
+            xmin, xmax = coords[1].min(), coords[1].max()
+            boundingBoxes.append((ymin, xmin, ymax, xmax))
+    
+    return boundingBoxes
+            
 
     
     
