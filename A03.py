@@ -62,7 +62,7 @@ def find_WBC(image):
     cellMask = cv2.cvtColor(cellMask, cv2.COLOR_BGR2GRAY)
     
     # (Step 7.5) morphological opening
-    element = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11, 11))
+    element = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
     morphMask = cv2.morphologyEx(cellMask, cv2.MORPH_OPEN, element, iterations=1)
     
     # (Step 8) Use cv2.connectedComponents to get disjoint blobs from cell_mask.
