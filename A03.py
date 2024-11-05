@@ -61,6 +61,9 @@ def find_WBC(image):
     # Convert cell_mask to grayscale!
     cellMask = cv2.cvtColor(cellMask, cv2.COLOR_BGR2GRAY)
     
+    # (Step 7.5) morphological opening
+    element = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11, 11))
+    morphMask = cv2.morphologyEx(cellMask, cv2.MORPH_OPEN, element, iterations=1)
     
     # (Step 8) Use cv2.connectedComponents to get disjoint blobs from cell_mask.
     # retval = number of connection components / blobs found 
