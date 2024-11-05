@@ -14,6 +14,7 @@ def find_WBC(image):
     
     
     #(Step 2) Compute mean color per superpixel.
+    
     # Create a numpy array to hold the mean color per superpixel: 
     groupMeans = np.zeros((cnt, 3), dtype="float32")
     
@@ -29,6 +30,7 @@ def find_WBC(image):
     
         
     # (Step 3) Use K-means on GROUP mean colors to group them into 4 color groups. 
+    
     # stores mean colors 
     groupMeans = np.float32(groupMeans)
     
@@ -48,6 +50,11 @@ def find_WBC(image):
     wbcGroup = np.argmin(distances)
     
     # (Step 5) Set that k-means group to white and the rest to black.
+    
+    # binary mask
+    centers = np.zeros_like(centers)
+    
+    centers[wbcGroup] = [255, 255, 255]
     
     
     
