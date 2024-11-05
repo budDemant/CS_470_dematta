@@ -31,7 +31,7 @@ def find_WBC(image):
     k = 4
     # ret = not used, bestLabels = list of which superpixel mean colors map to which kmeans group, centers = kmeans group center values
     # apply kmeans clustering
-    _, bestLabels, centers = cv2.kmeans(groupMeans, k, None, (cv2.TERM_CRITERIA_EPS, 
+    _, bestLabels, centers = cv2.kmeans(groupMeans, k, None, (cv2.TERM_CRITERIA_EPS +
                                     cv2.TERM_CRITERIA_MAX_ITER, 100, 0.2), 10, 
                                     cv2.KMEANS_RANDOM_CENTERS)
     
