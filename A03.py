@@ -63,7 +63,7 @@ def find_WBC(image):
     
     # (Step 7.5) morphological opening
     element = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11, 11))
-    morphMask = cv2.morphologyEx(cellMask, cv2.MORPH_DILATE, element, iterations=1)
+    morphMask = cv2.morphologyEx(cellMask, cv2.MORPH_DILATE, element, iterations=2)
     
     # (Step 8) Use cv2.connectedComponents to get disjoint blobs from cell_mask.
     # retval = number of connection components / blobs found 
