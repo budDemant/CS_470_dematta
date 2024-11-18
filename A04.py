@@ -12,8 +12,12 @@ def getOneLBPLabel(subimage):
     binaryValues = np.delete(binaryValues.flatten(), 4)
     
     # "".join converts ['1','0,'1','0'] to '1010'
-    # int(joinedString, 2) interprets binary string as base-2 number
-    lbpLabel = int("".join(binaryValues.astype(str)), 2)
+    binaryString = "".join(binaryValues.astype(str))
     
-    return lbpLabel
+    # Generate all rotated versions of binaryString
+    rotations = []
+    for i in range(len(binaryString)):
+        rotations.append(binaryString[i:] + binaryString[:i])
+    
+    return None
 
