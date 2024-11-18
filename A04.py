@@ -1,14 +1,19 @@
 import numpy as np
 
 def getOneLBPLabel(subimage):
-    # Ensure the input is a 3x3 subimage (maybe unnecessary given that all test inputs match this)
-    # assert subimage.shape == (3, 3), "Input must be a 3x3 subimage."
     
     # Get center pixel
     centerPixel = subimage[1, 1]
     
-    # binary pattern by comparing neighbors to the center pixel
-    binaryPattern = (subimage > centerPixel).astype(int)
+    # Compares each pixel of the subimage to the center pixel, then converts boolean values to 1s and 0s
+    binaryValues = (subimage > centerPixel).astype(int)
     
+    # 2D to 1D array (ex: [1, 0, 0, 0, 1, 0, 0, 0]), and excludes center pixel
+    binaryValues = np.delete(binaryValues.flatten(), 4)
     
-    #return lbpLabel
+    # "".join converts ['1','0,'1','0'] to '1010'
+    # int(joinedString, 2) interprets binary string as base-2 number
+    lbpLabel = int("".join(binaryValues.astype(str)), 2)
+    
+    return lbpLabel
+
