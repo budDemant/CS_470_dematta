@@ -19,5 +19,19 @@ def getOneLBPLabel(subimage):
     for i in range(len(binaryString)):
         rotations.append(binaryString[i:] + binaryString[:i])
     
+    # rotation invariance
+    rotationMin = min(rotations)
+    
+    # binary string interpreted as base-2 integer
+    minDecimal = int(rotationMin, 2)
+    
+    # if one binary number doesn't equal the next binary number, there's a transition
+    transitions = 0
+    for i in range(len(rotationMin)):
+        if rotationMin[i] != rotationMin[(i + 1) % len(rotationMin)]:
+            transitions +=1
+
+    
+    
     return None
 
