@@ -28,7 +28,7 @@ import numpy as np
 import shutil
 from enum import Enum
 
-BCCD_DATA_DIR = os.path.join(".", "data", "BCCD")
+BCCD_DATA_DIR = os.path.join("..", "..", "Data", "BCCD")
 BCCD_DATA_CSV = "data.csv"
 
 base_dir = "assign03"
