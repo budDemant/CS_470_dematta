@@ -31,7 +31,21 @@ def getOneLBPLabel(subimage):
         if rotationMin[i] != rotationMin[(i + 1) % len(rotationMin)]:
             transitions +=1
 
+    if transitions <= 2:
+        # all possible uniform patterns
+        uniformPatterns = [
+            "00000000", "11111111",  
+            "00000001", "10000000",  
+            "00000111", "11100000",  
+            "01111111", "11111110",  
+            "00111111", "11110000"
+        ]
+        
+        # finds which uniform pattern (if any) correlates to the binary string with the least rotations
+        lbpLabel = uniformPatterns.index(rotationMin)
     
+    else:
+        lbpLabel = 10
     
-    return None
+    return lbpLabel
 
