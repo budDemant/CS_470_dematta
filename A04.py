@@ -112,6 +112,21 @@ def getLBPFeatures(featureImage, regionSideCnt):
             
             subRegion = featureImage[startRow:startRow + subregionHeight, startCol:startCol + subregionWidth]
             
+            # Call getOneRegionLBPFeatures() to get the one subimage's histogram. 
+            hist = getOneRegionLBPFeatures(subRegion)
+            
+            # Append this histogram to your list of all histograms.
+            allHists.append(hist)
+    
+    # Convert your list of histograms to an np.array()        
+    allHists = np.array(allHists)
+    
+    # reshape so that it is a flat array:
+    allHists = np.reshape(allHists, (allHists.shape[0]*allHists.shape[1],))
+    
+    return allHists
+            
+            
             
     
     
