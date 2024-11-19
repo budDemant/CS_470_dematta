@@ -89,5 +89,14 @@ def getOneRegionLBPFeatures(subImage):
     normalizedHist = hist.astype(float) / totalPixels
     
     return normalizedHist
+
+def getLBPFeatures(featureImage, regionSideCnt):
+    
+    # subregion dimensions
+    height, width = featureImage.shape
+    subregionHeight = height // regionSideCnt
+    subregionWidth = width // regionSideCnt
+    
+    
     
     
