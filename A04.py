@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 
 def getOneLBPLabel(subimage):
     
@@ -49,3 +50,13 @@ def getOneLBPLabel(subimage):
     
     return lbpLabel
 
+def getLBPImage(image):
+    
+    # You may use cv2.copyMakeBorder (with a padding of 1 on all sides).
+    paddedImage = cv2.copyMakeBorder(image, 1, 1, 1, 1, cv2.BORDER_CONSTANT, value = 0)
+    
+    # The output label image will be the same size and type as the input image.
+    height, width = image.shape
+    lbpImage = np.zeros((height,width), dtype=np.uint8)
+    
+    
