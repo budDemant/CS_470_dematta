@@ -97,6 +97,21 @@ def getLBPFeatures(featureImage, regionSideCnt):
     subregionHeight = height // regionSideCnt
     subregionWidth = width // regionSideCnt
     
+    # Start with an empty list to hold all of the individual histograms.
+    allHists = []
     
+    # Loop through each possible subregion, going row by row and then column by column.
+    
+    for i in range(regionSideCnt):
+        for j in range(regionSideCnt):
+            
+            # extract subregion
+            # row * subregionHeight gives first row of current subregion
+            startRow = i * subregionHeight
+            startCol = j * subregionWidth
+            
+            subRegion = featureImage[startRow:startRow + subregionHeight, startCol:startCol + subregionWidth]
+            
+            
     
     
