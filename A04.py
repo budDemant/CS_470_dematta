@@ -2,18 +2,21 @@ import numpy as np
 import cv2
 
 def getOneLBPLabel(subimage):
-    
+    print(f"Subimage:\n{subimage}")
     # Get center pixel
     centerPixel = subimage[1, 1]
+    print(f"Center Pixel: {centerPixel}")
     
     # Compares each pixel of the subimage to the center pixel, then converts boolean values to 1s and 0s
     binaryValues = (subimage > centerPixel).astype(int)
     
     # 2D to 1D array (ex: [1, 0, 0, 0, 1, 0, 0, 0]), and excludes center pixel
     binaryValues = np.delete(binaryValues.flatten(), 4)
+    print(f"Binary Values (flattened, center removed): {binaryValues}")
     
     # "".join converts ['1','0,'1','0'] to '1010'
     binaryString = "".join(binaryValues.astype(str))
+    print(f"Binary String: {binaryString}, Rotation Min: {rotationMin}")
     
     # Generate all rotated versions of binaryString
     rotations = []
@@ -32,6 +35,9 @@ def getOneLBPLabel(subimage):
         if rotationMin[i] != rotationMin[(i + 1) % len(rotationMin)]:
             transitions +=1
 
+    transitions = sum(1 for i in range(len(rotationMin)) if rotationMin[i] != rotationMin[(i + 1) % len(rotationMin)])
+    print(f"Transitions: {transitions}")
+    
     if transitions <= 2:
         # all possible uniform patterns
         uniformPatterns = [
@@ -47,6 +53,7 @@ def getOneLBPLabel(subimage):
     
     else:
         lbpLabel = 10
+    print(f"LBP Label: {lbpLabel}\n")   
     
     return lbpLabel
 
@@ -68,8 +75,9 @@ def getLBPImage(image):
             lbpLabel = getOneLBPLabel(subimage)
             
             lbpImage[i-1, j-1] = lbpLabel
-            
+                   
     return lbpImage
+
 
 def getOneRegionLBPFeatures(subImage):
     
@@ -80,7 +88,7 @@ def getOneRegionLBPFeatures(subImage):
     labels = 11
     
     # + 1 because upper bound is exclusive for hist
-    labelsArrange = np.arrange(labels + 1)
+    labelsArrange = np.arange(labels + 1)
     
     hist, _ = np.histogram(flattenSubImage, bins=labelsArrange, range=(0,labels))
     
