@@ -70,3 +70,24 @@ def getLBPImage(image):
             lbpImage[i-1, j-1] = lbpLabel
             
     return lbpImage
+
+def getOneRegionLBPFeatures(subImage):
+    
+    # to prepare histogram values
+    flattenSubImage = subImage.flatten()
+    
+    # labels 0-10
+    labels = 11
+    
+    # + 1 because upper bound is exclusive for hist
+    labelsArrange = np.arrange(labels + 1)
+    
+    hist, _ = np.histogram(flattenSubImage, bins=labelsArrange, range=(0,labels))
+    
+    # normalize
+    totalPixels = flattenSubImage.size
+    normalizedHist = hist.astype(float) / totalPixels
+    
+    return normalizedHist
+    
+    
