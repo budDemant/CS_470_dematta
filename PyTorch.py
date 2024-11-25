@@ -71,10 +71,39 @@ device = "cpu"
 input_shape = next(iter(train_ds))[0][0].shape
 
 model = SimpleNetwork(input_shape)
+model = model.to(device)
+
+loss = nn.MSELoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
 print(model)
+
+def train_one_epoch(model, train_ds, device, loss_func, opt):
+    model.train()
+    num_batches = len(train_ds)
+    for batch_index, (X,y), in enumerate(train_ds):
+        X = X.to(device)
+        y = y.to(device)
         
+        pred = model(X)
+        loss = loss_func(pred, y)
+        
+        # Backprop
+        loss.backward()
+        opt.step()
+        opt.zero_grad()
+        
+        if batch_index % 100 == 0:
+            print("Batch", (batch_index+1), "of", num_batches, ": Loss =", loss.item())
+            
+        
+    epoch_cnt = 10
+    
+    for epoch in range(epoch_cnt):
+        print("** EPOCH", (epoch+1), "***************")
+            
     
 
 if __name__ == "__main__":
     main()
+
