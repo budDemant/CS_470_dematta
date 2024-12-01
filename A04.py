@@ -10,7 +10,11 @@ def getOneLBPLabel(subimage):
     binaryValues = (subimage > centerPixel).astype(int)
     
     # 2D to 1D array (ex: [1, 0, 0, 0, 1, 0, 0, 0]), and excludes center pixel
-    binaryValues = np.delete(binaryValues.flatten(), 4)
+    #binaryValues = np.delete(binaryValues.flatten(), 4)
+    
+    flat = binaryValues.flatten()
+    binaryValues = [flat[0], flat[1], flat[2], flat[5], flat[8], flat[7], flat[6], flat[3]]
+    binaryValues = np.array(binaryValues)
     
     # "".join converts ['1','0,'1','0'] to '1010'
     binaryString = "".join(binaryValues.astype(str))
@@ -22,7 +26,7 @@ def getOneLBPLabel(subimage):
     
     # rotation invariance
     rotationMin = min(rotations)
-    
+        
     # binary string interpreted as base-2 integer
     minDecimal = int(rotationMin, 2)
     
@@ -34,6 +38,7 @@ def getOneLBPLabel(subimage):
 
     if transitions <= 2:
         # all possible uniform patterns
+        '''
         uniformPatterns = [
             "00000000", "11111111",  
             "00000001", "10000000",  
@@ -41,12 +46,24 @@ def getOneLBPLabel(subimage):
             "01111111", "11111110",  
             "00111111", "11110000"
         ]
+        '''
+        uniformPatterns = [
+            "00000000", 
+            "00000001", 
+            "00000011", 
+            "00000111", 
+            "00001111",
+            "00011111",
+            "00111111",
+            "01111111",
+            "11111111"
+        ]
         
         # finds which uniform pattern (if any) correlates to the binary string with the least rotations
         lbpLabel = uniformPatterns.index(rotationMin)
     
     else:
-        lbpLabel = 10
+        lbpLabel = 9
     
     return lbpLabel
 
@@ -83,10 +100,10 @@ def getOneRegionLBPFeatures(subImage):
     flattenSubImage = subImage.flatten()
     
     # labels 0-10
-    labels = 11
+    labels = 10
     
     # + 1 because upper bound is exclusive for hist
-    labelsArrange = np.arrange(labels + 1)
+    labelsArrange = np.arange(labels + 1)
     
     hist, _ = np.histogram(flattenSubImage, bins=labelsArrange, range=(0,labels))
     
