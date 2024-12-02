@@ -71,9 +71,10 @@ def main():
     model = SimpleNetwork(input_shape)
     model = model.to(device)
     
-    loss_func = nn.MSELoss()
+    #loss_func = nn.MSELoss()
+    loss_func = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
-    
+        
     print(model)
     
     def train_one_epoch(model, train_ds, device, loss_func, opt):
@@ -85,7 +86,8 @@ def main():
             
             pred = model(X)
             
-            y = torch.nn.functional.one_hot(y, num_classes=10).to(torch.float32)
+            # Needed for MSE
+            #y = torch.nn.functional.one_hot(y, num_classes=10).to(torch.float32)
             
             #print(pred.shape, y.shape)
             
