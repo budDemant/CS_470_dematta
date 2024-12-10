@@ -16,3 +16,26 @@ def get_approach_description(approach_name):
     }
 
     return descriptions.get(approach_name)
+
+def get_data_transform(approach_name, training):
+    if training:
+        # minimal transformations
+        if approach_name == "BasicCNN":
+            return v2.Compose([
+                v2.ToImageTensor(),
+                v2.ConvertImageDtype(torch.float32)
+            ])
+        elif approach_name == "EnhancedCNN":
+            # data augmentation
+            return v2.Compose([
+                v2.RandomHorizontalFlip(),
+                v2.RandomCrop(32, padding=4),
+                v2.ToImageTensor(),
+                v2.ConvertImageDtype(torch.float32)
+            ])
+    else:
+        # non-training transformation (both approaches)
+        return v2.Compose([
+            v2.ToImageTensor(),
+            v2.ConvertImageDtype(torch.float32)
+        ])
