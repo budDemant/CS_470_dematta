@@ -69,6 +69,18 @@ def create_model(approach_name, class_cnt):
                 self.fc2 = nn.Linear(128, class_cnt)
                 # max pooling layer with 2x2 kernel
                 self.pool = nn.MaxPool2d(2, 2)
+                
+            def forward(self, x):
+                # apply 1st layer and relu activation
+                x = F.relu(self.conv1(x))
+                # apply max pool
+                x = self.pool(F.relu(self.conv2(x)))
+                # flatten tensor
+                x = x.view(x.size(0), -1)
+                x = F.relu(self.fc1(x))
+                x = self.fc2(x)
+                
+                return x
     
     
     return BasicCNN(class_cnt)
