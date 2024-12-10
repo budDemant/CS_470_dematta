@@ -8,7 +8,6 @@ def get_approach_names():
 
 
 # Given the approach_name, return a text description of what makes this approach distinct. 
-
 def get_approach_description(approach_name):
     descriptions = {
         "BasicCNN": "A simple convolutional neural network with minimal layers and no additional features.",
@@ -16,6 +15,7 @@ def get_approach_description(approach_name):
     }
 
     return descriptions.get(approach_name)
+
 
 def get_data_transform(approach_name, training):
     if training:
@@ -39,3 +39,15 @@ def get_data_transform(approach_name, training):
             v2.ToImageTensor(),
             v2.ConvertImageDtype(torch.float32)
         ])
+
+
+# Given the approach_name, return the preferred batch size.     
+def get_batch_size(approach_name):
+    
+    batch_sizes = {
+        "BasicCNN": 64,
+        "EnhancedCNN": 32
+    }
+
+    return batch_sizes.get(approach_name, 64) # defaults to 64 if not recognized
+
