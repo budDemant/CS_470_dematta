@@ -2,6 +2,10 @@ import torchvision.transforms.v2 as v2
 import torch
 import cv2
 
+# for create model function
+import torch.nn as nn
+import torch.nn.functional as F
+
 # Returns a list of the names of all combinations you will be testing.
 def get_approach_names():
     return ["BasicCNN", "EnhancedCNN"]
@@ -51,3 +55,20 @@ def get_batch_size(approach_name):
 
     return batch_sizes.get(approach_name, 64) # defaults to 64 if not recognized
 
+
+def create_model(approach_name, class_cnt):
+    if approach_name == "BasicCNN":
+        class BasicCNN(nn.Module):
+            def __init__(self, class_cnt):
+                # convolutional layers (input channel, output channel 3x3 kernel)
+                super(BasicCNN, self).__init__()
+                self.conv1 = nn.Conv2d(3, 32, kernel_size=3, padding=1)
+                self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
+                # connected layer
+                self.fc1 = nn.Linear(64 * 8 * 8, 128)
+                self.fc2 = nn.Linear(128, class_cnt)
+                # max pooling layer with 2x2 kernel
+                self.pool = nn.MaxPool2d(2, 2)
+    
+    
+    return BasicCNN(class_cnt)
