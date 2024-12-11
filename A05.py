@@ -137,6 +137,34 @@ def train_model(approach_name, model, device, train_dataloader, test_dataloader)
         # training phase
         model.train()
         train_loss = 0.0
+        
+    for inputs, labels in train_dataloader:
+        inputs, labels = inputs.to(device), labels.to(device)
+        
+        
+        # zero the gradients
+        optimizer.zero_grad()
+        
+        # forward pass
+        outputs = model(inputs)
+        loss = criterion(outputs, labels)
+        
+        # backwards pass
+        loss.backward()
+        
+        #update weights
+        optimizer.step()
+        
+        # Accumulate training loss
+        train_loss += loss.item()
+        
+    train_loss /= len(train_dataloader)
+    print (f"Training loss: {train_loss:.4f}")
+    
+    # Testing phase
+    model.eval() # evaluation mode
+    correct = 0
+    total = 0
     
     
     
