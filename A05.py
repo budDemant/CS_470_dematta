@@ -2,9 +2,13 @@ import torchvision.transforms.v2 as v2
 import torch
 import cv2
 
-# for create model function
+# for create_model()
 import torch.nn as nn
 import torch.nn.functional as F
+
+# for train_model()
+import torch.optim as optim
+import torch.nn as nn
 
 # Returns a list of the names of all combinations you will be testing.
 def get_approach_names():
@@ -112,3 +116,27 @@ def create_model(approach_name, class_cnt):
                 x = self.fc2(x)
                 
                 return x
+            
+
+def train_model(approach_name, model, device, train_dataloader, test_dataloader):
+    
+    model = model.to(device)
+    
+    # cross entropy loss required
+    criterion = nn.CrossEntropyLoss()
+    
+    # define optimizer
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    
+    # number of epochs
+    epochs = 10
+    
+    for epoch in range(epochs):
+        print(f"Epoch {epoch + 1}/{epochs}")
+        
+        # training phase
+        model.train()
+        train_loss = 0.0
+    
+    
+    
