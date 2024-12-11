@@ -78,9 +78,37 @@ def create_model(approach_name, class_cnt):
                 # flatten tensor
                 x = x.view(x.size(0), -1)
                 x = F.relu(self.fc1(x))
+                # output layer
                 x = self.fc2(x)
                 
                 return x
+            
     
+        return BasicCNN(class_cnt)
     
-    return BasicCNN(class_cnt)
+    elif approach_name == "EnhancedCNN":
+        # 3 convolutional layers with batch normalization (applied to 3rd layer), dropout layer, and larger fully connected layers
+        class EnhancedCNN(nn.Module):
+            def __init__(self, class_cnt):
+                super(EnhancedCNN, self).__init__()
+                self.conv1 = nn.Conv2d(3, 32, kernel_size=3, padding=1)
+                self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
+                self.conv3 = nn.Conv2d(64, 128, kernel_size=3, padding=1)
+                # Batch norm applied after 3rd layer
+                self.bn1 = nn.BatchNorm2d(128)
+                self.fc1 = nn.Linear(128 * 4 * 4, 256)
+                # dropout for regularization
+                self.dropout = nn.Dropout(0.5)
+                self.fc2 = nn.Linear(256, class_cnt)
+                self.pool = nn.MaxPool2d(2, 2)
+            
+            def forward(self, x):
+                x = F.relu(self.conv1(x))
+                x = self.pool(F.relu(self.conv2(x)))
+                x = self.pool(F.relu(self.bn1(self.conv3(x))))
+                x = x.view(x.size(0), -1)
+                x = F.relu(self.fc1(x))
+                x = self.dropout(x)
+                x = self.fc2(x)
+                
+                return x
