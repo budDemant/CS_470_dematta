@@ -59,6 +59,8 @@ def get_batch_size(approach_name):
 
     return batch_sizes.get(approach_name, 64) # defaults to 64 if not recognized
 
+# Taken from: https://pytorch.org/vision/0.9/transforms.html
+
 
 def create_model(approach_name, class_cnt):
     if approach_name == "BasicCNN":
@@ -86,6 +88,8 @@ def create_model(approach_name, class_cnt):
                 x = self.fc2(x)
                 
                 return x
+            
+    # Taken from: https://pytorch.org/tutorials/beginner/blitz/neural_networks_tutorial.html
             
     
         return BasicCNN(class_cnt)
@@ -117,8 +121,13 @@ def create_model(approach_name, class_cnt):
                 
                 return x
             
+            
+            
 
 def train_model(approach_name, model, device, train_dataloader, test_dataloader):
+    
+    # some pieces Taken from: https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html
+    # and: https://pytorch.org/tutorials/beginner/transfer_learning_tutorial.html
     
     model = model.to(device)
     
