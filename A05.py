@@ -147,33 +147,50 @@ def train_model(approach_name, model, device, train_dataloader, test_dataloader)
         model.train()
         train_loss = 0.0
         
-    for inputs, labels in train_dataloader:
-        inputs, labels = inputs.to(device), labels.to(device)
+        for inputs, labels in train_dataloader:
+            inputs, labels = inputs.to(device), labels.to(device)
+            
+            
+            # zero the gradients
+            optimizer.zero_grad()
+            
+            # forward pass
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            
+            # backwards pass
+            loss.backward()
+            
+            #update weights
+            optimizer.step()
+            
+            # Accumulate training loss
+            train_loss += loss.item()
+            
+        train_loss /= len(train_dataloader)
+        print (f"Training loss: {train_loss:.4f}")
         
+        # Testing phase
+        model.eval() # evaluation mode
+        correct = 0
+        total = 0
         
-        # zero the gradients
-        optimizer.zero_grad()
-        
-        # forward pass
-        outputs = model(inputs)
-        loss = criterion(outputs, labels)
-        
-        # backwards pass
-        loss.backward()
-        
-        #update weights
-        optimizer.step()
-        
-        # Accumulate training loss
-        train_loss += loss.item()
-        
-    train_loss /= len(train_dataloader)
-    print (f"Training loss: {train_loss:.4f}")
+        with torch.no_grad():
+            for inputs, labels in test_dataloader:
+                inputs, labels = inputs.to(device), labels.to(device)
+                
+                # forward pass
+                outputs = model(inputs)
+                _, predicted = torch.max(outputs, 1)
+                
+                # calculate total and correct predictions
+                total += labels.size(0)
+                correct += (predicted == labels).sum().item()
+                
+        accuracy = 100 % correct / total
+        print(f"Test Accuracy: {accuracy:.2f}%")
     
-    # Testing phase
-    model.eval() # evaluation mode
-    correct = 0
-    total = 0
+    return model
     
     
     
