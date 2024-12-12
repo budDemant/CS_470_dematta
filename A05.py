@@ -107,7 +107,7 @@ def create_model(approach_name, class_cnt):
                 self.conv3 = nn.Conv2d(64, 128, kernel_size=3, padding=1)
                 # Batch norm applied after 3rd layer
                 self.bn1 = nn.BatchNorm2d(128)
-                self.fc1 = nn.Linear(128 * 4 * 4, 256)
+                self.fc1 = nn.Linear(128 * 8 * 8, 256)
                 # dropout for regularization
                 self.dropout = nn.Dropout(0.5)
                 self.fc2 = nn.Linear(256, class_cnt)
@@ -115,9 +115,13 @@ def create_model(approach_name, class_cnt):
             
             def forward(self, x):
                 x = F.relu(self.conv1(x))
+                # print(f"After conv1: {x.shape}")
                 x = self.pool(F.relu(self.conv2(x)))
+                # print(f"After conv2 and pool: {x.shape}")
                 x = self.pool(F.relu(self.bn1(self.conv3(x))))
+                # print(f"After conv3, bn1 and pool: {x.shape}")
                 x = x.view(x.size(0), -1)
+                # print(f"After flattening: {x.shape}")
                 x = F.relu(self.fc1(x))
                 x = self.dropout(x)
                 x = self.fc2(x)
