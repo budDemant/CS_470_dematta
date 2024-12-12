@@ -71,7 +71,7 @@ def create_model(approach_name, class_cnt):
                 self.conv1 = nn.Conv2d(3, 32, kernel_size=3, padding=1)
                 self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
                 # connected layer
-                self.fc1 = nn.Linear(64 * 8 * 8, 128)
+                self.fc1 = nn.Linear(64 * 16 * 16, 128)
                 self.fc2 = nn.Linear(128, class_cnt)
                 # max pooling layer with 2x2 kernel
                 self.pool = nn.MaxPool2d(2, 2)
@@ -79,13 +79,13 @@ def create_model(approach_name, class_cnt):
             def forward(self, x):
                 # apply 1st layer and relu activation
                 x = F.relu(self.conv1(x))
-                print(f"After conv1: {x.shape}")
+                # print(f"After conv1: {x.shape}")
                 # apply max pool
                 x = self.pool(F.relu(self.conv2(x)))
-                print(f"After conv2 and pool: {x.shape}")
+                # print(f"After conv2 and pool: {x.shape}")
                 # flatten tensor
                 x = x.view(x.size(0), -1)
-                print(f"After flattening: {x.shape}")
+                # print(f"After flattening: {x.shape}")
                 x = F.relu(self.fc1(x))
                 # output layer
                 x = self.fc2(x)
@@ -123,6 +123,7 @@ def create_model(approach_name, class_cnt):
                 x = self.fc2(x)
                 
                 return x
+        return EnhancedCNN(class_cnt)
             
             
             
