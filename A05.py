@@ -30,7 +30,7 @@ def get_data_transform(approach_name, training):
         # minimal transformations
         if approach_name == "BasicCNN":
             return v2.Compose([
-                v2.ToImageTensor(),
+                v2.ToTensor(),
                 v2.ConvertImageDtype(torch.float32)
             ])
         elif approach_name == "EnhancedCNN":
@@ -38,13 +38,13 @@ def get_data_transform(approach_name, training):
             return v2.Compose([
                 v2.RandomHorizontalFlip(),
                 v2.RandomCrop(32, padding=4),
-                v2.ToImageTensor(),
+                v2.ToTensor(),
                 v2.ConvertImageDtype(torch.float32)
             ])
     else:
         # non-training transformation (both approaches)
         return v2.Compose([
-            v2.ToImageTensor(),
+            v2.ToTensor(),
             v2.ConvertImageDtype(torch.float32)
         ])
 
