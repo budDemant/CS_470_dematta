@@ -180,8 +180,8 @@ def train_model(approach_name, model, device, train_dataloader, test_dataloader)
         
         # Testing phase
         model.eval() # evaluation mode
-        correct = 0
-        total = 0
+        # correct = 0
+        # total = 0
         
         with torch.no_grad():
             for inputs, labels in test_dataloader:
@@ -195,8 +195,8 @@ def train_model(approach_name, model, device, train_dataloader, test_dataloader)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
                 
-        accuracy = 100 % correct / total
-        print(f"Test Accuracy: {accuracy:.2f}%")
+        # accuracy = 100 % correct / total
+        # print(f"Test Accuracy: {accuracy:.2f}%")
     
     return model
     
