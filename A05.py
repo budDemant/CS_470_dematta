@@ -79,10 +79,13 @@ def create_model(approach_name, class_cnt):
             def forward(self, x):
                 # apply 1st layer and relu activation
                 x = F.relu(self.conv1(x))
+                print(f"After conv1: {x.shape}")
                 # apply max pool
                 x = self.pool(F.relu(self.conv2(x)))
+                print(f"After conv2 and pool: {x.shape}")
                 # flatten tensor
                 x = x.view(x.size(0), -1)
+                print(f"After flattening: {x.shape}")
                 x = F.relu(self.fc1(x))
                 # output layer
                 x = self.fc2(x)
