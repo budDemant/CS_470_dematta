@@ -192,8 +192,8 @@ def train_model(approach_name, model, device, train_dataloader, test_dataloader)
                 _, predicted = torch.max(outputs, 1)
                 
                 # calculate total and correct predictions
-                total += labels.size(0)
-                correct += (predicted == labels).sum().item()
+                # total += labels.size(0)
+                # correct += (predicted == labels).sum().item()
                 
         # accuracy = 100 % correct / total
         # print(f"Test Accuracy: {accuracy:.2f}%")

@@ -13,7 +13,7 @@ RESULTS:
 ****************************************
 APPROACH	TRAINING_accuracy	TRAINING_f1	TESTING_accuracy	TESTING_f1
 BasicCNN	0.9672	0.9671	0.6801	0.6748
-EnhancedCNN	0.6472	0.6390	0.6349	0.6272
+EnhancedCNN	0.6472	0.6391	0.6348	0.6271
 
 ****************************************
 MODEL ARCHITECTURES:
